@@ -435,10 +435,11 @@ bazel_test: failpoint-enable bazel_ci_prepare
 
 
 bazel_coverage_test: failpoint-enable bazel_ci_prepare
+	go install github.com/hawkingrei/bazel_collect@latest
 	bazel --output_user_root=/home/jenkins/.tidb/tmp coverage --config=ci --@io_bazel_rules_go//go/config:cover_format=go_cover \
 		-- //... -//cmd/... -//tests/graceshutdown/... \
 		-//tests/globalkilltest/... -//tests/readonlytest/... -//br/pkg/task:task_test
-	bazel --output_user_root=/home/jenkins/.tidb/tmp coverage --config=ci --@io_bazel_rules_go//go/config:cover_format=go_cover --define gotags=featuretag \
+	bazel --output_user_root=/home/jenkins/.tidb/tmp coverage --config=ci--@io_bazel_rules_go//go/config:cover_format=go_cover --define gotags=featuretag \
 		-- //... -//cmd/... -//tests/graceshutdown/... \
 		-//tests/globalkilltest/... -//tests/readonlytest/... -//br/pkg/task:task_test
 
