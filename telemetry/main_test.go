@@ -21,6 +21,7 @@ import (
 	"github.com/pingcap/tidb/kv"
 	"github.com/pingcap/tidb/sessionctx"
 	"github.com/pingcap/tidb/testkit/testsetup"
+	"go.opencensus.io/stats/view"
 	"go.uber.org/goleak"
 )
 
@@ -40,6 +41,9 @@ func TestMain(m *testing.M) {
 		goleak.IgnoreTopFunction("go.etcd.io/etcd/client/pkg/v3/logutil.(*MergeLogger).outputLoop"),
 		goleak.IgnoreTopFunction("go.opencensus.io/stats/view.(*worker).start"),
 		goleak.IgnoreTopFunction("github.com/golang/glog.(*loggingT).flushDaemon"),
+		goleak.Cleanup(func(_ int) {
+			view.Stop()
+		}),
 	}
 
 	goleak.VerifyTestMain(m, opts...)
